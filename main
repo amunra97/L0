@@ -1,0 +1,42 @@
+# Импорт необходимых библиотек
+import time
+
+# Чтение адресов из файла
+def read_addresses(filename):
+    with open(filename, 'r') as file:
+        addresses = file.read().splitlines()
+    # Удаление лишних пробелов и приведение к нижнему регистру
+    return set(addr.strip().lower() for addr in addresses)
+
+# Проверка наличия адресов
+def check_addresses(large_set, small_list):
+    return [addr for addr in small_list if addr in large_set]
+
+# Основная функция
+def main():
+    # Чтение адресов из файлов
+    large_file = '803093.txt'
+    small_file = '58.txt'
+    
+    print(f"Чтение адресов из {large_file}...")
+    large_addresses = read_addresses(large_file)
+    
+    print(f"Чтение адресов из {small_file}...")
+    small_addresses = read_addresses(small_file)
+    
+    print("Проверка наличия адресов...")
+    start_time = time.time()
+    matches = check_addresses(large_addresses, small_addresses)
+    end_time = time.time()
+
+    print(f"Найдено {len(matches)} совпадений.")
+    print(f"Затраченное время: {end_time - start_time:.2f} секунд")
+    
+    # Сохранение результатов
+    with open('results.txt', 'w') as result_file:
+        for match in matches:
+            result_file.write(f"{match}\n")
+    print("Результаты сохранены в файл results.txt")
+
+if __name__ == "__main__":
+    main()
